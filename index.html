@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<!-- REMPLACER : titre de la page -->
+<title>Château Belvédère — Vin d'Exception</title>
+<meta name="description" content="Découvrez notre vin d'exception, élaboré avec passion." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+  /* ============================================
+     DESIGN SYSTEM — Modifier ici les couleurs
+     ============================================ */
+  :root{
+    --bg:#faf7f2;
+    --surface:#ffffff;
+    --text:#1f1b16;
+    --muted:#6b6259;
+    --primary:#6b1f2a;       /* Bordeaux */
+    --primary-dark:#4a141d;
+    --accent:#c9a86a;        /* Or */
+    --border:#e8e1d5;
+    --whatsapp:#25d366;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(31,27,22,.08);
+    --container:1200px;
+    --font-head:'Playfair Display', Georgia, serif;
+    --font-body:'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:var(--container);margin:0 auto;padding:0 1.25rem}
+
+  h1,h2,h3{font-family:var(--font-head);font-weight:700;letter-spacing:-.01em;line-height:1.2}
+  h2{font-size:clamp(1.8rem,3.5vw,2.6rem);margin-bottom:.75rem;color:var(--primary)}
+  h3{font-size:1.25rem;margin-bottom:.5rem}
+  p{color:var(--muted)}
+
+  /* ===== NAVIGATION ===== */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;max-width:var(--container);margin:0 auto}
+  .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-head);font-size:1.25rem;color:var(--primary);font-weight:700}
+  .brand img{height:38px;width:auto}
+  nav ul{display:flex;gap:1.5rem;list-style:none}
+  nav a{font-size:.95rem;font-weight:500;transition:color .2s}
+  nav a:hover{color:var(--primary)}
+  .burger{display:none;background:none;border:0;cursor:pointer;font-size:1.5rem;color:var(--primary)}
+
+  @media (max-width:768px){
+    nav ul{
+      position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;background:#fff;
+      padding:1rem;gap:1rem;
+      border-bottom:1px solid var(--border);
+      transform:translateY(-150%);transition:transform .3s;
+    }
+    nav ul.open{transform:translateY(0)}
+    .burger{display:block}
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;min-height:88vh;display:flex;align-items:center;
+    background:linear-gradient(rgba(31,27,22,.55),rgba(31,27,22,.65)), url('images/produit-principal.jpg') center/cover no-repeat;
+    color:#fff;text-align:center;
+  }
+  .hero-content{max-width:780px;margin:0 auto;padding:5rem 1.25rem}
+  .hero h1{
+    font-size:clamp(2.4rem,6vw,4.5rem);
+    color:#fff;margin-bottom:1rem;
+    text-shadow:0 4px 20px rgba(0,0,0,.4);
+  }
+  .hero .tagline{
+    font-size:clamp(1rem,2vw,1.25rem);
+    color:var(--accent);font-style:italic;
+    margin-bottom:2rem;letter-spacing:.5px;
+  }
+  .btn{
+    display:inline-block;padding:.95rem 2rem;border-radius:50px;
+    font-weight:600;cursor:pointer;border:0;font-size:1rem;
+    transition:transform .2s, box-shadow .2s, background .2s;
+  }
+  .btn-primary{background:var(--accent);color:var(--primary-dark)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(201,168,106,.4)}
+  .btn-outline{background:transparent;color:#fff;border:2px solid #fff;margin-left:.5rem}
+  .btn-outline:hover{background:#fff;color:var(--primary)}
+
+  /* ===== SECTIONS ===== */
+  section{padding:5rem 0}
+  .section-head{text-align:center;margin-bottom:3rem}
+  .section-head .kicker{
+    display:inline-block;color:var(--accent);
+    text-transform:uppercase;letter-spacing:3px;
+    font-size:.8rem;font-weight:600;margin-bottom:.5rem;
+  }
+
+  /* À propos */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+  .about-grid img{border-radius:var(--radius);box-shadow:var(--shadow)}
+  @media (max-width:768px){.about-grid{grid-template-columns:1fr}}
+
+  /* Accordéon */
+  .accordion{margin-top:1.5rem;border-top:1px solid var(--border)}
+  .accordion-item{border-bottom:1px solid var(--border)}
+  .accordion-trigger{
+    width:100%;background:none;border:0;cursor:pointer;
+    padding:1.1rem 0;display:flex;justify-content:space-between;align-items:center;
+    font-size:1.05rem;font-weight:600;color:var(--text);text-align:left;
+  }
+  .accordion-trigger .icon{
+    font-size:1.4rem;color:var(--primary);transition:transform .3s;
+  }
+  .accordion-trigger[aria-expanded="true"] .icon{transform:rotate(45deg)}
+  .accordion-content{
+    max-height:0;overflow:hidden;transition:max-height .4s ease;
+    color:var(--muted);
+  }
+  .accordion-content > div{padding:0 0 1.25rem}
+
+  /* Caractéristiques */
+  #caracteristiques{background:var(--surface)}
+  .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:2rem}
+  .feature{
+    background:var(--bg);border:1px solid var(--border);
+    padding:1.75rem;border-radius:var(--radius);
+    transition:transform .25s, box-shadow .25s;
+  }
+  .feature:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .feature .ico{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--primary);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.25rem;margin-bottom:1rem;font-weight:bold;
+  }
+
+  /* Galerie */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+  .gallery figure{
+    overflow:hidden;border-radius:var(--radius);
+    aspect-ratio:4/3;box-shadow:var(--shadow);cursor:pointer;
+  }
+  .gallery img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .5s;
+  }
+  .gallery figure:hover img{transform:scale(1.08)}
+
+  /* Contact */
+  #contact{background:var(--primary);color:#fff}
+  #contact h2{color:#fff}
+  #contact .kicker{color:var(--accent)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2rem}
+  @media (max-width:768px){.contact-grid{grid-template-columns:1fr}}
+  .contact-info p{color:rgba(255,255,255,.85);margin-bottom:.75rem}
+  .contact-info strong{color:var(--accent);display:block;margin-top:1rem}
+  form{display:grid;gap:1rem}
+  form input,form textarea{
+    padding:.9rem 1rem;border-radius:10px;border:0;
+    font-family:inherit;font-size:1rem;
+  }
+  form textarea{min-height:120px;resize:vertical}
+  form button{background:var(--accent);color:var(--primary-dark)}
+  form button:hover{background:#fff}
+
+  /* Footer */
+  footer{background:#1a1411;color:rgba(255,255,255,.6);text-align:center;padding:2rem 1rem;font-size:.9rem}
+  footer a{color:var(--accent)}
+
+  /* WhatsApp flottant */
+  .wa-float{
+    position:fixed;bottom:25px;right:25px;z-index:100;
+    width:60px;height:60px;border-radius:50%;
+    background:var(--whatsapp);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(37,211,102,.4);
+    transition:transform .2s;
+  }
+  .wa-float:hover{transform:scale(1.1)}
+  .wa-float svg{width:32px;height:32px;fill:#fff}
+
+  /* Anim apparition */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s, transform .7s}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#accueil" class="brand">
+      <!-- REMPLACER : images/logo.png -->
+      <img src="images/utamu_africa_description.jpeg" alt="Logo" onerror="this.style.display='none'">
+      <span>Etablissement UTAMU AFRICA</span>
+    </a>
+    <button class="burger" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+    <nav>
+      <ul id="menu">
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#caracteristiques">Caractéristiques</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="accueil" class="hero">
+  <div class="hero-content">
+    <!-- REMPLACER : nom du produit -->
+    <h1>Etablissement UTAMU AFRICA</h1>
+    <!-- REMPLACER : slogan -->
+    <p class="tagline">« Onja kidogo ufurai zaidi »</p>
+    <a href="#apropos" class="btn btn-primary">Découvrir</a>
+    <a href="#caracteristiques" class="btn btn-outline">Voir les caractéristiques</a>
+  </div>
+</section>
+
+<!-- ============ À PROPOS ============ -->
+<section id="apropos">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Notre histoire</span>
+      <h2>À propos</h2>
+    </div>
+    <div class="about-grid">
+      <!-- REMPLACER : images/produit-1.jpg -->
+      <img src="images/utamu_africa.jpeg" alt="Notre vignoble">
+      <div>
+        <!-- REMPLACER : texte de présentation -->
+        <p>Depuis plusieurs années, UTAMU AFRICA les richesse naturelles de notre terroir à travers des boissons élaborée à partir d'ingredients soignesement sélectionnés. Chaque bouteille reflete notre engagement envers la qualité, l'authenticité et le bien-étre de consommateurs. En choisissant, vous découvrez une saveur unique inspirée de la nature, associant tradition, innovation et savoir-faire local. </p>
+
+        <!-- ===== ACCORDÉON ===== -->
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span>En savoir plus sur le domaine</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="accordion-content">
+              <div>UTAMU AFRICA est une entreprise établie à Goma, en République Démocratique du Congo. Animés par la passion de l'innovation et de la valorisation des produits locaux, nous travaillons chaque jour pour offrir à nos clients des boissons de qualité, élaborées avec professionnalisme et rigueur</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span>Notre philosophie</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="accordion-content">
+              <div>Notre philosophie repose sur la valorisation des ressources locales, la recherche permanente de la qualité et le respect de nos consommateurs. Nous croyons que les richesses de notre région constituent une opportunité de créer des produits authentiques capables de répondre aux besoins du marché tout en contribuant au développement économique local.
+
+À travers VN UTAMU AFRICA, nous nous engageons à promouvoir le savoir-faire de notre communauté, à maintenir des standards élevés de qualité et à offrir une expérience appréciée par nos clients. Notre ambition est de bâtir une marque qui inspire confiance, valorise l'innovation et participe au rayonnement de Goma et de la République Démocratique du Congo.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span>Lire plus sur nos engagements</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="accordion-content">
+              <div>Chez UTAMU AFRICA, notre engagement est de proposer des produits élaborés avec soin, à partir d'ingrédients sélectionnés pour leur qualité et leur authenticité. Nous accordons une attention particulière à chaque étape de production afin d'offrir à nos consommateurs une boisson qui répond à des standards élevés de qualité et d'hygiène.
+
+Nous croyons à la valeur des ressources naturelles et au savoir-faire local. C'est pourquoi nous travaillons à développer des produits qui mettent en avant les richesses de notre région tout en répondant aux attentes de nos clients.
+
+Notre priorité est de construire une relation de confiance durable avec nos consommateurs grâce à la transparence, à la qualité constante de nos produits et à notre engagement envers l'excellence..</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARACTÉRISTIQUES ============ -->
+<section id="caracteristiques">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Le produit</span>
+      <h2> Caractéristiques</h2>
+      <p></p>
+    </div>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="ico">🌿</div>
+        <h3>Plantes naturelles sélectionnées</h3>
+        <p>Notre produit est élaboré à partir de plantes soigneusement choisies pour leur qualité et leur authenticité.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">🍃 </div>
+        <h3>Inspiration de la nature</h3>
+        <p>Chaque bouteille reflète la richesse des ressources naturelles et le respect de l'environnement qui nous entoure.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">✨</div>
+        <h3>Saveur unique et authentique</h3>
+        <p>Une combinaison harmonieuse d'ingrédients naturels offrant une expérience gustative agréable et distinctive.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">📍 </div>
+        <h3>Héritage et savoir-faire local</h3>
+        <p>Produit à Goma, VN UTAMU AFRICA valorise les connaissances locales et les richesses de notre région.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIE ============ -->
+<section id="galerie">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Photos</span>
+      <h2>Galerie</h2>
+    </div>
+    <div class="gallery">
+      <!-- REMPLACER : images du dossier images/ -->
+      <figure><img src="images/utamu_africa.jpeg" alt="Photo 1" loading="lazy"></figure>
+      <figure><img src="images/utamu_africa_stock.jpeg" alt="Photo 2" loading="lazy"></figure>
+      <figure><img src="images/utamu_africa_description.jpeg" alt="Photo 3" loading="lazy"></figure>
+      <!-- <figure><img src="images/produit-principal.jpg" alt="Produit principal" loading="lazy"></figure> -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Nous écrire</span>
+      <h2>Contact</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <!-- REMPLACER : coordonnées -->
+        <p>Pour toute question, commande ou visite, n'hésitez pas à nous contacter. Nous serons ravis de partager notre passion avec vous.</p>
+        <!-- <strong>Adresse</strong>
+        <p>12 Route des Vignes, 33000 Bordeaux, France</p> -->
+        <strong>Téléphone</strong>
+        <p>+33 5 56 00 00 00</p>
+        <strong>Email</strong>
+        <p>contact@chateau-belvedere.fr</p>
+      </div>
+      <form onsubmit="event.preventDefault();alert('Message envoyé ! (démo)');this.reset();">
+        <input type="text" placeholder="Votre nom" required>
+        <input type="email" placeholder="Votre email" required>
+        <textarea placeholder="Votre message" required></textarea>
+        <button type="submit" class="btn">Envoyer</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <p>© 2026 Etablissement UTAMU AFRICA — Tous droits réservés. — <a href="#accueil">Retour en haut</a></p>
+  <p style="margin-top:.5rem;font-size:.8rem">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
+</footer>
+
+<!-- ============ BOUTON WHATSAPP FLOTTANT ============ -->
+<!-- REMPLACER : numéro WhatsApp au format international SANS le + (ex: 33612345678) -->
+<a class="wa-float" href="https://wa.me/243905229519?text=Bonjour%2C%20je%20souhaite%20plus%20d%27informations%20sur%20vos%20produits."
+   target="_blank" rel="noopener" aria-label="Contactez-nous sur WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+</a>
+
+<script>
+  /* === Accordéon === */
+  document.querySelectorAll('.accordion-trigger').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const expanded = btn.getAttribute('aria-expanded')==='true';
+      const content = btn.nextElementSibling;
+      btn.setAttribute('aria-expanded', !expanded);
+      content.style.maxHeight = expanded ? null : content.scrollHeight + 'px';
+    });
+  });
+
+  /* === Fermer menu mobile au clic === */
+  document.querySelectorAll('#menu a').forEach(a=>{
+    a.addEventListener('click',()=>document.getElementById('menu').classList.remove('open'));
+  });
+
+  /* === Apparition au scroll === */
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:.12});
+  document.querySelectorAll('section .container, .hero-content').forEach(el=>{
+    el.classList.add('reveal'); io.observe(el);
+  });
+</script>
+</body>
+</html>
